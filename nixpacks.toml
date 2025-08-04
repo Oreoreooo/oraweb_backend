@@ -1,0 +1,4 @@
+[build]
+language = "python"
+install_command = "pip install -r server_flask/requirements.txt"
+start_command = "python server_flask/run.py"  # 替换为你的入口文件路径
