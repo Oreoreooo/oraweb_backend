@@ -1,0 +1,3 @@
+@echo off
+echo Starting Memories Creator app with AI integration...
+npm run dev react: ^18.2.0 - React %E6%A0%B8%E5%BF%83%E5%BA%93react-dom: ^18.2.0 - React DOM %E6%B8%B2%E6%9F%93%E5%99%A8react-router-dom: ^7.6.3 - React %E8%B7%AF%E7%94%B1%E7%AE%A1%E7%90%86react-scripts: 5.0.1 - Create React App %E8%84%9A%E6%9C%ACaxios: ^1.6.2 - HTTP %E5%AE%A2%E6%88%B7%E7%AB%AF%EF%BC%8C%E7%94%A8%E4%BA%8E API %E8%AF%B7%E6%B1%82cors: ^2.8.5 - %E8%B7%A8%E5%9F%9F%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86dotenv: ^16.3.1 - %E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%AE%A1%E7%90%86express: ^4.18.2 - Node.js %E6%9C%8D%E5%8A%A1%E5%99%A8%E6%A1%86%E6%9E%B6sqlite3: ^5.1.6 - SQLite %E6%95%B0%E6%8D%AE%E5%BA%93
