@@ -1,9 +1,9 @@
 node_modules
 
-server_flask/__pycache__/
-server_flask/app/__pycache__/
-server_flask/app/blueprints/__pycache__/
+__pycache__/
+app/__pycache__/
+app/blueprints/__pycache__/
 
-server_flask/models
-server_flask/instance/
-server_flask/.env
+models
+instance/
+.env
