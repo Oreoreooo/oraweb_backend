@@ -9,7 +9,7 @@ pymysql==1.1.0
 cryptography==42.0.5
 gunicorn==21.2.0
 uvicorn==0.29.0
-PyAudio==0.2.14
+https://files.pythonhosted.org/packages/a5/8b/7f9a061c1cc2b230f9ac02a6003fcd14c85ce1828013aecbaf45aa988d20/PyAudio-0.2.14-cp313-cp313-win_amd64.whl
 numpy==1.26.4
 funasr==1.2.6
 openai==1.55.0
