@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify, send_file
 from flask_jwt_extended import jwt_required, get_jwt_identity, decode_token
-from app.blueprints.chat import AIService
+# from app.blueprints.chat import AIService
 from app.blueprints.asr import ASRService
 from app.blueprints.tts import TTSService
-# from app.blueprints.openai import AIService
+from app.blueprints.openai import AIService
 from app.extension import db
 from app.models import UserModel, Conversation, ChatMessage, CommunityPost
 from io import BytesIO

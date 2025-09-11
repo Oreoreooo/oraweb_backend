@@ -58,7 +58,11 @@ class Config:
     DEBUG = True
     
     # CORS settings
-    CORS_ORIGINS = os.environ.get('CORS_ORIGINS') or ['http://localhost:3000']
+    CORS_ORIGINS = os.environ.get('CORS_ORIGINS') or [
+        'http://localhost:3000',
+        'http://localhost:3001', 
+        'https://orawebfrontend-production.up.railway.app'  # 替换为你的Railway前端域名
+    ]
 
     @classmethod
     def validate_config(cls):

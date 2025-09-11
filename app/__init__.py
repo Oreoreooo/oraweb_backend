@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from app.extension import db, jwt, mail
 from .routes import bp
@@ -16,14 +16,50 @@ def create_app(config_class=Config):
     jwt.init_app(app)
     mail.init_app(app)
     
-    # Configure CORS
+    # Configure CORS - Parse origins from environment variable
+    cors_origins = app.config['CORS_ORIGINS']
+    if isinstance(cors_origins, str):
+        # If it's a string from environment variable, split it
+        cors_origins = [origin.strip() for origin in cors_origins.split(',')]
+    
+    # Debug: Print CORS origins
+    print(f"🔧 CORS Origins configured: {cors_origins}")
+    
     CORS(app, resources={
         r"/*": {
-            "origins": ["http://localhost:3000", "http://localhost:3001"],
+            "origins": cors_origins,
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-            "allow_headers": ["Content-Type", "Authorization"]
+            "allow_headers": [
+                "Content-Type", 
+                "Authorization", 
+                "ngrok-skip-browser-warning",
+                "X-Requested-With",
+                "Accept",
+                "Origin"
+            ],
+            "supports_credentials": True,
+            "expose_headers": ["Content-Type", "Authorization"],
+            "send_wildcard": False,  # 重要：禁用通配符，确保credentials工作
+            "vary_header": True      # 重要：添加Vary头，帮助浏览器正确处理CORS
         }
     })
+    
+    # Add explicit OPTIONS handler for preflight requests
+    @app.before_request
+    def handle_preflight():
+        if request.method == "OPTIONS":
+            response = jsonify({'status': 'OK'})
+            origin = request.headers.get('Origin')
+            
+            # 只对配置的origins返回CORS头
+            if origin in cors_origins:
+                response.headers.add("Access-Control-Allow-Origin", origin)
+                response.headers.add('Access-Control-Allow-Headers', "Content-Type,Authorization,ngrok-skip-browser-warning,X-Requested-With,Accept,Origin")
+                response.headers.add('Access-Control-Allow-Methods', "GET,PUT,POST,DELETE,OPTIONS")
+                response.headers.add('Access-Control-Allow-Credentials', 'true')  # 明确设置credentials
+                response.headers.add('Vary', 'Origin')  # 帮助浏览器缓存处理
+            
+            return response
     
     # JWT error handlers
     @jwt.expired_token_loader
@@ -55,6 +91,24 @@ def create_app(config_class=Config):
     def user_lookup_callback(_jwt_header, jwt_data):
         identity = jwt_data["sub"]
         return UserModel.query.filter_by(id=identity).one_or_none()
+    
+    # Add a root route for testing
+    @app.route('/')
+    def index():
+        return jsonify({
+            'message': 'ORA Backend API is running!',
+            'status': 'online',
+            'version': '1.0.0',
+            'endpoints': {
+                'auth': '/api/auth',
+                'api': '/api',
+                'health': '/health'
+            }
+        })
+    
+    @app.route('/health')
+    def health():
+        return jsonify({'status': 'healthy', 'timestamp': datetime.now().isoformat()})
     
     # Register blueprints
     app.register_blueprint(bp, url_prefix='/api')
